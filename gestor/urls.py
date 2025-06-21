@@ -14,7 +14,7 @@ router.register(r'issues', views.IssuesViewSet, 'issues')
 router.register(r'tasks', views.TaskViewSet, 'tasks')
 
 # Router anidado para Members bajo Project
-projects_router = nested_routers.NestedSimpleRouter(router, r'projects', lookup='project')
+projects_router = nested_routers.NestedSimpleRouter(router, r'project_members', lookup='project')
 projects_router.register(r'members', views.ProjectMembersViewSet, basename='project-members')
 
 urlpatterns = [
