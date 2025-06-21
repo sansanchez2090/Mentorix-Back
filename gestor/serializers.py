@@ -12,7 +12,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['ID','name', 'description','skills', 'resume']
+        fields = ['name', 'description','skills', 'resume']
+        extra_kwargs =  {'ID': {'write_only': True},
+                         'password': {'write_only': True},
+                         'resume': {'read_only': True}
+                        }
 
 class AreaSerializer(serializers.ModelSerializer):
     area_members = UserSerializer(many=True, read_only=True)
@@ -30,10 +34,11 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectMembersSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(source='user', read_only=True)
     user = UserSerializer(read_only=True)
+    user_name = serializers.CharField(source='user.name', read_only=True)
 
     class Meta:
         model = ProjectMembers
-        fields = ['user_id','user','role']
+        fields = ['user_id','user_name','user','role']
 
 class IssuesSerializer(serializers.ModelSerializer):
     assigned_to = serializers.SlugRelatedField(read_only=True, slug_field='name')
