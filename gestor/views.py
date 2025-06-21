@@ -41,12 +41,6 @@ class IssuesViewSet(viewsets.ModelViewSet):
     queryset = models.Issues.objects.all()
     serializer_class = serializers.IssuesSerializer
 
-    def get_queryset(self):
-        return models.Issues.objects.filter(assigned_to=self.request.user)
-
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = models.Task.objects.all()
     serializer_class = serializers.TaskSerializer
-
-    def get_queryset(self):
-        return models.Task.objects.filter(assigned_to=self.request.user)
