@@ -8,14 +8,15 @@ class SkillSerializer(serializers.ModelSerializer):
         fields = ['name']
 
 class UserSerializer(serializers.ModelSerializer):
-    skills = serializers.SlugRelatedField(many=True, read_only=True,slug_field='name')
+    skills_names = serializers.SlugRelatedField(many=True,read_only=True,slug_field='name',source='skills')
+    skills = serializers.PrimaryKeyRelatedField(many=True,queryset=Skill.objects.all(),write_only=True)
 
     class Meta:
         model = User
-        fields = ['name', 'description','skills', 'resume']
+        fields = '__all__'
         extra_kwargs =  {'ID': {'write_only': True},
                          'password': {'write_only': True},
-                         'resume': {'read_only': True}
+                         'email': {'write_only': True},
                         }
 
 class AreaSerializer(serializers.ModelSerializer):
@@ -42,8 +43,8 @@ class ProjectMembersSerializer(serializers.ModelSerializer):
         fields = ['project_id','user_id','user_name','user','role']
 
 class IssuesSerializer(serializers.ModelSerializer):
-    project_id = serializers.PrimaryKeyRelatedField(source='project', read_only=True)
-    assigned_to = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    project_id = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all(),source='project')
+    assigned_to = serializers.SlugRelatedField(queryset=User.objects.all(),slug_field='name')
     status = serializers.ChoiceField(choices=Issues.ISSUE_STATUS_CHOICES)
 
     class Meta:
@@ -51,8 +52,8 @@ class IssuesSerializer(serializers.ModelSerializer):
         fields = ['project_id', 'name', 'assigned_to','status']
 
 class TaskSerializer(serializers.ModelSerializer):
-    project_id = serializers.PrimaryKeyRelatedField(source='project', read_only=True)
-    assigned_to = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    project_id = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all(),source='project')
+    assigned_to = serializers.SlugRelatedField(queryset=User.objects.all(),slug_field='name')
     status = serializers.ChoiceField(choices=Task.TASK_STATUS_CHOICES)
 
     class Meta:
