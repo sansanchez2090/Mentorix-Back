@@ -32,26 +32,29 @@ class ProjectSerializer(serializers.ModelSerializer):
         exclude = ['members']
 
 class ProjectMembersSerializer(serializers.ModelSerializer):
+    project_id = serializers.PrimaryKeyRelatedField(source='project', read_only=True)
     user_id = serializers.PrimaryKeyRelatedField(source='user', read_only=True)
     user = UserSerializer(read_only=True)
     user_name = serializers.CharField(source='user.name', read_only=True)
 
     class Meta:
         model = ProjectMembers
-        fields = ['user_id','user_name','user','role']
+        fields = ['project_id','user_id','user_name','user','role']
 
 class IssuesSerializer(serializers.ModelSerializer):
+    project_id = serializers.PrimaryKeyRelatedField(source='project', read_only=True)
     assigned_to = serializers.SlugRelatedField(read_only=True, slug_field='name')
     status = serializers.ChoiceField(choices=Issues.ISSUE_STATUS_CHOICES)
 
     class Meta:
         model = Issues
-        fields = ['name', 'assigned_to','status']
+        fields = ['project_id', 'name', 'assigned_to','status']
 
 class TaskSerializer(serializers.ModelSerializer):
+    project_id = serializers.PrimaryKeyRelatedField(source='project', read_only=True)
     assigned_to = serializers.SlugRelatedField(read_only=True, slug_field='name')
     status = serializers.ChoiceField(choices=Task.TASK_STATUS_CHOICES)
 
     class Meta:
         model = Task
-        fields = ['name', 'assigned_to','deadline','status']
+        fields = ['project_id','name','assigned_to','deadline','status']
