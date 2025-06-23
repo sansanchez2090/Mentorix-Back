@@ -1,12 +1,12 @@
 from django.db import models
 
 class User(models.Model):
-    ID = models.PositiveBigIntegerField(primary_key=True)
     name = models.CharField(max_length=200)
     description = models.TextField(default="")
     email = models.EmailField(max_length=254, unique=True)
     password = models.CharField(max_length=200)
-    resume = models.FileField(upload_to='resumes/')
+    resume = models.FileField(upload_to='resumes/', blank=True, null=True)
+    skill = models.CharField(max_length=200, default="")
     skills = models.ManyToManyField('Skill', related_name='users')
 
     def __str__(self):
