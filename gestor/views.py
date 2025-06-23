@@ -11,9 +11,6 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
 
-    def get_queryset(self):
-        return models.User.objects.all().prefetch_related('skills', 'projects')
-
 class AreaViewSet(viewsets.ModelViewSet):
     queryset = models.Area.objects.all()
     serializer_class = serializers.AreaSerializer   
