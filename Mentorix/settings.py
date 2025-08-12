@@ -89,8 +89,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "mentorixdb",
-        "USER": "postgres",
-        "PASSWORD": "santiago24",
+        "USER": "name",
+        "PASSWORD": "-",
         "HOST": "localhost",
         "PORT": "5432",
     }
